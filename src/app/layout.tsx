@@ -8,8 +8,8 @@ import { Providers } from './providers'; // 1. Se importa el provider
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Monitor de Buses Red',
-  description: 'Monitor en tiempo real de recorridos de buses',
+  title: 'Cuando viene la micro?',
+  description: 'Página que te dice cuando viene la micro en San Bernardo',
 };
 
 export default function RootLayout({
