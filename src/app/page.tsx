@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react'; // <-- Importa useCallback
 import Head from 'next/head';
 import { Bus, RefreshCw } from 'lucide-react';
-//import { ThemeToggleButton } from '@/components/ThemeToggleButton';
-//
-// --- ESTRUCTURA DE DATOS PARA LOS RECORRIDOS ---
+import { ThemeToggleButton } from '@/components/ThemeToggleButton';
+
+// --- (El resto de tu código, como routesConfig y las interfaces, se mantiene igual) ---
 const routesConfig = {
   "G38": {
     "IDA": [
@@ -40,33 +40,30 @@ const routesConfig = {
     ]
   }
 };
-
 type RouteId = keyof typeof routesConfig;
 type Direction = 'IDA' | 'VUELTA';
-
-// --- Tipos de Datos ---
 interface BusInfo {
   id: string;
   meters_distance: number;
   min_arrival_time: number;
   max_arrival_time: number;
 }
-
 interface BusStopData {
   stopId: string;
   stopName: string; 
   buses: BusInfo[];
 }
+// ------------------------------------------------------------------------------------
 
 export default function HomePage() {
-  // --- Estados del Componente ---
   const [selectedRoute, setSelectedRoute] = useState<RouteId>(Object.keys(routesConfig)[0] as RouteId);
   const [selectedDirection, setSelectedDirection] = useState<Direction>('IDA');
   const [busData, setBusData] = useState<BusStopData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  // --- Envuelve fetchData en useCallback ---
+  const fetchData = useCallback(async () => {
     const stopsToFetch = routesConfig[selectedRoute][selectedDirection];
 
     if (!stopsToFetch || stopsToFetch.length === 0) {
@@ -90,25 +87,29 @@ export default function HomePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+    // Agrega las dependencias de la función aquí
+  }, [selectedRoute, selectedDirection]);
 
+  // --- El useEffect ahora depende de la función fetchData ---
   useEffect(() => {
     fetchData();
-  }, [selectedRoute, selectedDirection]);
+  }, [fetchData]); // <-- Ahora fetchData es una dependencia estable
 
   const currentStops = routesConfig[selectedRoute][selectedDirection] || [];
 
   return (
+    // --- (El resto de tu JSX se mantiene exactamente igual) ---
     <>
       <Head>
         <title>Monitor de Buses Red</title>
         <meta name="description" content="Monitor en tiempo real de recorridos de buses" />
       </Head>
-
       <main className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-black p-4 sm:p-8 font-sans transition-colors duration-300">
         <div className="w-full max-w-4xl mx-auto">
-          {/* --- Cabecera --- */}
           <header className="relative text-center mb-8">
+            <div className="absolute top-0 right-0">
+              <ThemeToggleButton />
+            </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-gray-100">
               Cuando <span className="text-gray-600 dark:text-gray-400">viene</span> la <span className="text-gray-600 dark:text-gray-400">micro</span>?
             </h1>
@@ -116,8 +117,6 @@ export default function HomePage() {
               Selecciona un recorrido y sentido para ver su estado.
             </p>
           </header>
-
-          {/* --- Controles de Usuario --- */}
           <div className="p-4 bg-white dark:bg-gray-900/50 dark:border dark:border-gray-700 rounded-lg shadow-md mb-8 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -168,8 +167,6 @@ export default function HomePage() {
                 {isLoading ? 'Actualizando...' : 'Actualizar'}
               </button>
           </div>
-          
-          {/* --- Contenedor de Resultados --- */}
           <div className="space-y-6">
             {isLoading ? (
               <p className="text-center text-gray-600 dark:text-gray-400">Cargando información...</p>
@@ -212,10 +209,9 @@ export default function HomePage() {
             )}
           </div>
         </div>
-        {/* --- Pie de Página --- */}
         <footer className="w-full max-w-4xl mx-auto mt-12 py-4 border-t border-gray-200 dark:border-gray-800">
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Versión 1.0, Desarrollado con NextJS por Vicente Pardo
+            Desarrollado por [Tu Nombre Aquí]
           </p>
         </footer>
       </main>
