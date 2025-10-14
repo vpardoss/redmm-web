@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react'; // <-- Importa useCallback
 import Head from 'next/head';
 import { Bus, RefreshCw } from 'lucide-react';
-//import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 
 // --- (El resto de tu código, como routesConfig y las interfaces, se mantiene igual) ---
 const routesConfig = {
