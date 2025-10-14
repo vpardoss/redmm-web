@@ -2,7 +2,28 @@
 
 import { NextResponse } from 'next/server';
 
-// La función debe llamarse GET y debe ser exportada.
+// --- Definimos interfaces para los datos y así evitamos usar 'any' ---
+interface Bus {
+  id: string;
+  meters_distance: number;
+  min_arrival_time: number;
+  max_arrival_time: number;
+}
+
+interface Service {
+  id: string;
+  valid: boolean;
+  status_description: string;
+  buses: Bus[];
+}
+
+interface BusStopApiResponse {
+  id: string;
+  name: string;
+  services: Service[];
+}
+// --------------------------------------------------------------------
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const stopIds = searchParams.get('stopIds');
@@ -27,8 +48,10 @@ export async function GET(request: Request) {
       )
     );
 
-    const result = responses.map((data: any) => {
-      const relevantService = data.services.find((service: any) => service.id === routeId);
+    const result = responses.map((data: BusStopApiResponse) => { // <-- Usamos la nueva interface
+      const relevantService = data.services.find(
+        (service: Service) => service.id === routeId // <-- Usamos la nueva interface
+      );
       return {
         stopId: data.id,
         stopName: data.name,
