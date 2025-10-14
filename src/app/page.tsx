@@ -100,8 +100,8 @@ export default function HomePage() {
     // --- (El resto de tu JSX se mantiene exactamente igual) ---
     <>
       <Head>
-        <title>Monitor de Buses Red</title>
-        <meta name="description" content="Monitor en tiempo real de recorridos de buses" />
+        <title>Cuando viene la micro?</title>
+        <meta name="description" content="Cuando vienen las micros en San Bernardo?" />
       </Head>
       <main className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-black p-4 sm:p-8 font-sans transition-colors duration-300">
         <div className="w-full max-w-4xl mx-auto">
