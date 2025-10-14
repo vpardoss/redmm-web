@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'; // <-- Importa useCallback
 import Head from 'next/head';
 import { Bus, RefreshCw } from 'lucide-react';
-import { ThemeToggleButton } from '@/components/ThemeToggleButton';
+//import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 
 // --- (El resto de tu código, como routesConfig y las interfaces, se mantiene igual) ---
 const routesConfig = {
@@ -107,9 +107,6 @@ export default function HomePage() {
       <main className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-black p-4 sm:p-8 font-sans transition-colors duration-300">
         <div className="w-full max-w-4xl mx-auto">
           <header className="relative text-center mb-8">
-            <div className="absolute top-0 right-0">
-              <ThemeToggleButton />
-            </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-gray-100">
               Cuando <span className="text-gray-600 dark:text-gray-400">viene</span> la <span className="text-gray-600 dark:text-gray-400">micro</span>?
             </h1>
@@ -211,7 +208,7 @@ export default function HomePage() {
         </div>
         <footer className="w-full max-w-4xl mx-auto mt-12 py-4 border-t border-gray-200 dark:border-gray-800">
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Desarrollado por [Tu Nombre Aquí]
+            Desarrollado con NextJS por Vicente Pardo
           </p>
         </footer>
       </main>
