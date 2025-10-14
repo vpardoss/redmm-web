@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { Bus, RefreshCw } from 'lucide-react';
-//import { ThemeToggleButton } from '@/components/ThemeToggleButton';
-//
+import { ThemeToggleButton } from '@/components/ThemeToggleButton'; // Importa el botón de tema
+
 // --- ESTRUCTURA DE DATOS PARA LOS RECORRIDOS ---
 const routesConfig = {
   "G38": {
@@ -105,23 +105,27 @@ export default function HomePage() {
         <meta name="description" content="Monitor en tiempo real de recorridos de buses" />
       </Head>
 
-      <main className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-black p-4 sm:p-8 font-sans transition-colors duration-300">
+      <main className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-8 font-sans transition-colors duration-300">
         <div className="w-full max-w-4xl mx-auto">
           {/* --- Cabecera --- */}
           <header className="relative text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-gray-100">
-              Cuando <span className="text-gray-600 dark:text-gray-400">viene</span> la <span className="text-gray-600 dark:text-gray-400">micro</span>?
+            <div className="absolute top-0 right-0">
+              <ThemeToggleButton />
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white">
+              Cuando <span className="text-red-600">viene</span> la <span className="text-red-600">micro</span>?
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
               Selecciona un recorrido y sentido para ver su estado.
             </p>
           </header>
 
           {/* --- Controles de Usuario --- */}
-          <div className="p-4 bg-white dark:bg-gray-900/50 dark:border dark:border-gray-700 rounded-lg shadow-md mb-8 space-y-4">
+          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md mb-8 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="route-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="route-select" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Recorrido
                 </label>
                 <select
@@ -134,7 +138,7 @@ export default function HomePage() {
                       setSelectedDirection('IDA');
                     }
                   }}
-                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 >
                   {Object.keys(routesConfig).map((route) => (
                     <option key={route} value={route}>{route}</option>
@@ -142,7 +146,7 @@ export default function HomePage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Sentido
                 </label>
                 <div className="flex gap-2">
@@ -151,7 +155,7 @@ export default function HomePage() {
                       key={dir}
                       onClick={() => setSelectedDirection(dir)}
                       disabled={!routesConfig[selectedRoute][dir]}
-                      className={`w-full p-2 font-semibold rounded-md transition-colors ${selectedDirection === dir ? 'bg-black text-white dark:bg-gray-300 dark:text-black' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'} disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50`}
+                      className={`w-full p-2 font-semibold rounded-md transition-colors ${selectedDirection === dir ? 'bg-red-600 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500'} disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50`}
                     >
                       {dir}
                     </button>
@@ -162,7 +166,7 @@ export default function HomePage() {
              <button
                 onClick={fetchData}
                 disabled={isLoading}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-black text-white font-semibold rounded-md shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-300 dark:text-black dark:hover:bg-white disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
                 {isLoading ? 'Actualizando...' : 'Actualizar'}
@@ -172,15 +176,15 @@ export default function HomePage() {
           {/* --- Contenedor de Resultados --- */}
           <div className="space-y-6">
             {isLoading ? (
-              <p className="text-center text-gray-600 dark:text-gray-400">Cargando información...</p>
+              <p className="text-center text-gray-600 dark:text-gray-300">Cargando información...</p>
             ) : error ? (
               <p className="text-center text-red-500">{error}</p>
             ) : currentStops.length > 0 ? (
                 currentStops.map((stopConfig) => {
                   const stopData = busData.find(data => data.stopId === stopConfig.id);
                   return (
-                    <div key={stopConfig.id} className="bg-white dark:bg-gray-900/50 dark:border dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
-                      <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <div key={stopConfig.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                      <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                         <h2 className="text-xl font-bold text-gray-800 dark:text-white">{stopConfig.name}</h2>
                         <p className="text-sm text-gray-500 dark:text-gray-400">Paradero: {stopConfig.id}</p>
                       </div>
@@ -188,9 +192,9 @@ export default function HomePage() {
                         {stopData && stopData.buses.length > 0 ? (
                           <ul className="space-y-3">
                             {stopData.buses.map((bus) => (
-                              <li key={bus.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                              <li key={bus.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-md">
                                 <div className="flex items-center gap-3 mb-2 sm:mb-0">
-                                  <Bus className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                                  <Bus className="h-6 w-6 text-red-500" />
                                   <span className="font-mono text-lg text-gray-900 dark:text-white">{bus.id}</span>
                                 </div>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1 text-sm text-gray-600 dark:text-gray-300 w-full sm:w-auto">
@@ -212,12 +216,6 @@ export default function HomePage() {
             )}
           </div>
         </div>
-        {/* --- Pie de Página --- */}
-        <footer className="w-full max-w-4xl mx-auto mt-12 py-4 border-t border-gray-200 dark:border-gray-800">
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Versión 1.0, Desarrollado con NextJS por Vicente Pardo
-          </p>
-        </footer>
       </main>
     </>
   );
