@@ -51,12 +51,12 @@ const routesConfig: RoutesConfig = {
   },
   "G43": {
     "IDA": [
-      { id: "PG1216", name: "Baquedano esq. Camino Padre Hurtado (IDA)" },
+      { id: "PG2016", name: "Baquedano esq. Camino Padre Hurtado (IDA)" },
       { id: "PG374", name: "Hospital El Pino (IDA)" }
     ],
     "VUELTA": [
       { id: "PG2047", name: "Hospital El Pino (VUELTA)" },
-      { id: "PG1207", name: "Baquedano esq. Camino Padre Hurtado (VUELTA)" }
+      { id: "PG2015", name: "Baquedano esq. Kume Nutram (VUELTA)" }
     ]
   },
   "G08V": {
