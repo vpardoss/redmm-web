@@ -23,9 +23,11 @@ const routesConfig = {
       { id: "PG1990", name: "Haras de Nos / Casas del Parque (IDA)" },
       { id: "PG741", name: "Estación San Bernardo (IDA)" }
     ],
+  },
+  "G08V": {
     "VUELTA": [
-      { id: "PG741", name: "Estación San Bernardo (VUELTA)" },
-      { id: "PG1981", name: "Haras de Nos (VUELTA)" }
+      { id: "PG1790", name: "Mall Plaza Sur (VUELTA)" },
+      { id: "PG1981", name: "Haras de Nos / Casas del Parque (IDA)" }
     ]
   },
   "G02": {
