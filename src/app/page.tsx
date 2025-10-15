@@ -1,21 +1,22 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react'; // <-- Importa useCallback
+import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { Bus, RefreshCw } from 'lucide-react';
 
+// --- Tipos de Datos Mejorados ---
 type Stop = { id: string; name: string; };
 
 type RouteDirections = {
-  IDA?: Stop[];    // <-- IDA es ahora opcional
-  VUELTA?: Stop[]; // <-- VUELTA es ahora opcional
+  IDA?: Stop[];
+  VUELTA?: Stop[];
 };
 
 type RoutesConfig = {
   [key: string]: RouteDirections;
 };
 
-const routesConfig = {
+const routesConfig: RoutesConfig = {
   "G38": {
     "IDA": [
       { id: "PG1790", name: "Mall Plaza Sur (IDA)"},
@@ -33,6 +34,10 @@ const routesConfig = {
       { id: "PG1990", name: "Haras de Nos / Casas del Parque (IDA)" },
       { id: "PG741", name: "Estación San Bernardo (IDA)" }
     ],
+    "VUELTA": [
+      { id: "PG741", name: "Estación San Bernardo (VUELTA)" },
+      { id: "PG1990", name: "Haras de Nos / Casas del Parque (VUELTA)" }
+    ]
   },
   "G08V": {
     "VUELTA": [
@@ -51,8 +56,10 @@ const routesConfig = {
     ]
   }
 };
+
 type RouteId = keyof typeof routesConfig;
 type Direction = 'IDA' | 'VUELTA';
+
 interface BusInfo {
   id: string;
   meters_distance: number;
@@ -72,12 +79,14 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // --- Envuelve fetchData en useCallback ---
   const fetchData = useCallback(async () => {
-    const stopsToFetch = routesConfig[selectedRoute][selectedDirection];
+    // --- CAMBIO 1: Acceso seguro a los datos ---
+    const route = routesConfig[selectedRoute];
+    const stopsToFetch = route ? route[selectedDirection] : undefined;
 
     if (!stopsToFetch || stopsToFetch.length === 0) {
       setBusData([]);
+      setIsLoading(false);
       return;
     }
 
@@ -97,15 +106,13 @@ export default function HomePage() {
     } finally {
       setIsLoading(false);
     }
-    // Agrega las dependencias de la función aquí
   }, [selectedRoute, selectedDirection]);
 
-  // --- El useEffect ahora depende de la función fetchData ---
   useEffect(() => {
     fetchData();
-  }, [fetchData]); // <-- Ahora fetchData es una dependencia estable
+  }, [fetchData]);
 
-  const currentStops = routesConfig[selectedRoute][selectedDirection] || [];
+  const currentStops = routesConfig[selectedRoute]?.[selectedDirection] || [];
 
   return (
     <>
@@ -133,10 +140,14 @@ export default function HomePage() {
                   id="route-select"
                   value={selectedRoute}
                   onChange={(e) => {
-                    const newRoute = e.target.value as RouteId;
-                    setSelectedRoute(newRoute);
-                    if (!routesConfig[newRoute][selectedDirection]) {
-                      setSelectedDirection('IDA');
+                    const newRouteId = e.target.value as RouteId;
+                    setSelectedRoute(newRouteId);
+                    
+                    // --- CAMBIO 2: Lógica de selección inteligente ---
+                    const newRouteConfig = routesConfig[newRouteId];
+                    if (!newRouteConfig[selectedDirection]) {
+                      const firstAvailableDirection = Object.keys(newRouteConfig)[0] as Direction;
+                      setSelectedDirection(firstAvailableDirection);
                     }
                   }}
                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
@@ -155,7 +166,7 @@ export default function HomePage() {
                     <button
                       key={dir}
                       onClick={() => setSelectedDirection(dir)}
-                      disabled={!routesConfig[selectedRoute][dir]}
+                      disabled={!routesConfig[selectedRoute]?.[dir]}
                       className={`w-full p-2 font-semibold rounded-md transition-colors ${selectedDirection === dir ? 'bg-black text-white dark:bg-gray-300 dark:text-black' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'} disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50`}
                     >
                       {dir}
