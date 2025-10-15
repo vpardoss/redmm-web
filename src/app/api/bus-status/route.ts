@@ -2,7 +2,6 @@
 
 import { NextResponse } from 'next/server';
 
-// --- Definimos interfaces para los datos y así evitamos usar 'any' ---
 interface Bus {
   id: string;
   meters_distance: number;
@@ -22,7 +21,6 @@ interface BusStopApiResponse {
   name: string;
   services: Service[];
 }
-// --------------------------------------------------------------------
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -48,9 +46,9 @@ export async function GET(request: Request) {
       )
     );
 
-    const result = responses.map((data: BusStopApiResponse) => { // <-- Usamos la nueva interface
+    const result = responses.map((data: BusStopApiResponse) => { // Usamos la nueva interfaz
       const relevantService = data.services.find(
-        (service: Service) => service.id === routeId // <-- Usamos la nueva interface
+        (service: Service) => service.id === routeId
       );
       return {
         stopId: data.id,
