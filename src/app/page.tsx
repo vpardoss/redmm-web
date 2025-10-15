@@ -39,6 +39,26 @@ const routesConfig: RoutesConfig = {
       { id: "PG1990", name: "Haras de Nos / Casas del Parque (VUELTA)" }
     ]
   },
+  "G24": {
+    "IDA": [
+      { id: "PG1216", name: "Baquedano esq. Camino Padre Hurtado (IDA)" },
+      { id: "PG374", name: "Hospital El Pino (IDA)" }
+    ],
+    "VUELTA": [
+      { id: "PG2047", name: "Hospital El Pino (VUELTA)" },
+      { id: "PG1207", name: "Baquedano esq. Camino Padre Hurtado (VUELTA)" }
+    ]
+  },
+  "G43": {
+    "IDA": [
+      { id: "PG1216", name: "Baquedano esq. Camino Padre Hurtado (IDA)" },
+      { id: "PG374", name: "Hospital El Pino (IDA)" }
+    ],
+    "VUELTA": [
+      { id: "PG2047", name: "Hospital El Pino (VUELTA)" },
+      { id: "PG1207", name: "Baquedano esq. Camino Padre Hurtado (VUELTA)" }
+    ]
+  },
   "G08V": {
     "VUELTA": [
       { id: "PG1790", name: "Mall Plaza Sur (VUELTA)" },
