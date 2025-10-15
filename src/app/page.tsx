@@ -4,7 +4,17 @@ import { useState, useEffect, useCallback } from 'react'; // <-- Importa useCall
 import Head from 'next/head';
 import { Bus, RefreshCw } from 'lucide-react';
 
-// --- (El resto de tu código, como routesConfig y las interfaces, se mantiene igual) ---
+type Stop = { id: string; name: string; };
+
+type RouteDirections = {
+  IDA?: Stop[];    // <-- IDA es ahora opcional
+  VUELTA?: Stop[]; // <-- VUELTA es ahora opcional
+};
+
+type RoutesConfig = {
+  [key: string]: RouteDirections;
+};
+
 const routesConfig = {
   "G38": {
     "IDA": [
@@ -27,7 +37,7 @@ const routesConfig = {
   "G08V": {
     "VUELTA": [
       { id: "PG1790", name: "Mall Plaza Sur (VUELTA)" },
-      { id: "PG1981", name: "Haras de Nos / Casas del Parque (IDA)" }
+      { id: "PG1990", name: "Haras de Nos / Casas del Parque (VUELTA)" }
     ]
   },
   "G02": {
@@ -54,7 +64,6 @@ interface BusStopData {
   stopName: string; 
   buses: BusInfo[];
 }
-// ------------------------------------------------------------------------------------
 
 export default function HomePage() {
   const [selectedRoute, setSelectedRoute] = useState<RouteId>(Object.keys(routesConfig)[0] as RouteId);
@@ -99,7 +108,6 @@ export default function HomePage() {
   const currentStops = routesConfig[selectedRoute][selectedDirection] || [];
 
   return (
-    // --- (El resto de tu JSX se mantiene exactamente igual) ---
     <>
       <Head>
         <title>Cuando viene la micro?</title>
