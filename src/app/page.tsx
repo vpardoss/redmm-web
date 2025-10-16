@@ -124,7 +124,7 @@ export default function HomePage() {
     try {
       const response = await fetch(`/api/bus-status?stopIds=${stopIds}&routeId=${selectedRoute}`);
       if (!response.ok) {
-        throw new Error('No se pudo obtener la información.');
+        throw new Error('No se pudo obtener la información. La API está caida.');
       }
       const data = await response.json();
       setBusData(data);
@@ -255,7 +255,7 @@ export default function HomePage() {
         </div>
         <footer className="w-full max-w-4xl mx-auto mt-12 py-4 border-t border-gray-200 dark:border-gray-800">
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Desarrollado con NextJS por Vicente Pardo
+            Desarrollado con Next.JS por Vicente Pardo
           </p>
         </footer>
       </main>
