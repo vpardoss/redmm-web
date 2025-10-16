@@ -74,9 +74,16 @@ const routesConfig: RoutesConfig = {
       { id: "PG1745", name: "Estación Nos (VUELTA)" },
       { id: "PG1752", name: "Josefa Denos (Casa Nico) (VUELTA)" }
     ]
+  },
+  "210": {
+    "IDA": [
+      { id: "PF103", name: "Volcán Quizapu (IDA)" },
+      { id: "PD196", name: "PUC Campus San Joaquín (IDA)" }
+    ]
   }
 };
 
+const routeOrder: RouteId[] = ["G38", "G32", "G24", "G43", "G08V", "G02", "210"];
 type RouteId = keyof typeof routesConfig;
 type Direction = 'IDA' | 'VUELTA';
 
@@ -93,7 +100,7 @@ interface BusStopData {
 }
 
 export default function HomePage() {
-  const [selectedRoute, setSelectedRoute] = useState<RouteId>(Object.keys(routesConfig)[0] as RouteId);
+  const [selectedRoute, setSelectedRoute] = useState<RouteId>(routeOrder[0]);
   const [selectedDirection, setSelectedDirection] = useState<Direction>('IDA');
   const [busData, setBusData] = useState<BusStopData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
