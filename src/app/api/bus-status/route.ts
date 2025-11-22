@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   }
 
   const stopIdArray = stopIds.split(',');
-  const API_URL = 'https://spb82m8sd209.share.zrok.io';
+  const API_URL = 'https://spb82m8sd209.share.zrok.io/bus-stop/';
 
   try {
     const responses = await Promise.all(
