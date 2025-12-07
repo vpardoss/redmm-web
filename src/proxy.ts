@@ -3,7 +3,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   // Solo ejecutar en producción (cuando está desplegado)
   if (process.env.NODE_ENV === 'production') {
     // Vercel y otras plataformas usan el header 'x-forwarded-proto'
